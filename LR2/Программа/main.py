@@ -75,11 +75,11 @@ def print_gens(text, gens):
 
 def main():
     #Общие параметры
-    p_mutation = 0.1
+    p_mutation = 0.2
     gen_length = 4
     generation_size = 4
-    selection_method = 'rank'
-    max_steps = 10
+    selection_method = 'classic' #classic или rank
+    max_steps = 4
     descriptive_log = True
     
     #Параметры генерации
