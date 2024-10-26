@@ -16,6 +16,7 @@ class Gen():
             self.binarizator = Gen.intToBin
 
         if x is not None:
+            #Создание из изначального целочисленного объекта
             code = self.binarizator(x)
             if len(code) > length:
                 raise ValueError(f'Длина полученного кода ({len(code)}) больше заданной длины хромосом ({length}).')
@@ -25,6 +26,7 @@ class Gen():
             code = [ int(char) for char in code ]
             self.code = code
         elif code is not None:
+            #Создание из изначального кода
             self.code = code
         
         if len(code) != length:
@@ -43,6 +45,7 @@ class Gen():
         self.code[place] = int(not self.code[place])
     
     def cross(self, otherGen: 'Gen') -> list:
+        #Скрещивание
         if self.code_length != otherGen.code_length:
             raise ValueError('Длины кодов хромосом не совпадают')
         
