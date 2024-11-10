@@ -1,0 +1,64 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{random}
+
+\PYG{k}{class} \PYG{n+nc}{Gen}\PYG{p}{():}
+    \PYG{n+nd}{@staticmethod}
+    \PYG{k}{def} \PYG{n+nf}{intToBin}\PYG{p}{(}\PYG{n}{x}\PYG{p}{:} \PYG{n+nb}{int}\PYG{p}{):}
+        \PYG{k}{return} \PYG{n+nb}{bin}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)[}\PYG{l+m+mi}{2}\PYG{p}{:]}
+    
+    \PYG{n+nd}{@staticmethod}
+    \PYG{k}{def} \PYG{n+nf}{binToInt}\PYG{p}{(}\PYG{n}{code}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{):}
+        \PYG{k}{return} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{code}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+    
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{length}\PYG{p}{,} \PYG{n}{code}\PYG{p}{:} \PYG{n+nb}{list} \PYG{o}{=} \PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{x} \PYG{o}{=} \PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{binarizator} \PYG{o}{=} \PYG{k+kc}{None}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n}{binarizator}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{binarizator} \PYG{o}{=} \PYG{n}{binarizator}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{binarizator} \PYG{o}{=} \PYG{n}{Gen}\PYG{o}{.}\PYG{n}{intToBin}
+
+        \PYG{k}{if} \PYG{n}{x} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{}Создание из изначального целочисленного объекта}
+            \PYG{n}{code} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{binarizator}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{n}{length}\PYG{p}{:}
+                \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Длина полученного кода (}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{) больше заданной длины хромосом (}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{length}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{).\PYGZsq{}}\PYG{p}{)}
+            
+            \PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n}{length}\PYG{p}{:}
+                \PYG{n}{code} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}0\PYGZsq{}} \PYG{o}{*} \PYG{p}{(}\PYG{n}{length} \PYG{o}{\PYGZhy{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{))} \PYG{o}{+} \PYG{n}{code}
+            \PYG{n}{code} \PYG{o}{=} \PYG{p}{[} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{char}\PYG{p}{)} \PYG{k}{for} \PYG{n}{char} \PYG{o+ow}{in} \PYG{n}{code} \PYG{p}{]}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code} \PYG{o}{=} \PYG{n}{code}
+        \PYG{k}{elif} \PYG{n}{code} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}\PYG{p}{:}
+            \PYG{c+c1}{\PYGZsh{}Создание из изначального кода}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code} \PYG{o}{=} \PYG{n}{code}
+        
+        \PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{)} \PYG{o}{!=} \PYG{n}{length}\PYG{p}{:}
+                \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Длина полученного кода (}\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{code}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{) больше заданной длины хромосом (}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{length}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{).\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length} \PYG{o}{=} \PYG{n}{length}
+
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}str\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{res} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+        \PYG{k}{for} \PYG{n}{elem} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code}\PYG{p}{:}
+            \PYG{n}{res} \PYG{o}{+=} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{elem}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{res}
+
+    \PYG{k}{def} \PYG{n+nf}{mutate}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{place} \PYG{o}{=} \PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[}\PYG{n}{place}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{o+ow}{not} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[}\PYG{n}{place}\PYG{p}{])}
+    
+    \PYG{k}{def} \PYG{n+nf}{cross}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{otherGen}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Gen\PYGZsq{}}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{:}
+        \PYG{c+c1}{\PYGZsh{}Скрещивание}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length} \PYG{o}{!=} \PYG{n}{otherGen}\PYG{o}{.}\PYG{n}{code\PYGZus{}length}\PYG{p}{:}
+            \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Длины кодов хромосом не совпадают\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{point} \PYG{o}{=} \PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{code1} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[:}\PYG{n}{point}\PYG{p}{]} \PYG{o}{+} \PYG{n}{otherGen}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[}\PYG{n}{point}\PYG{p}{:]}
+        \PYG{n}{gen1} \PYG{o}{=} \PYG{n}{Gen}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length}\PYG{p}{,} \PYG{n}{code}\PYG{o}{=}\PYG{n}{code1}\PYG{p}{)}
+        \PYG{n}{code2} \PYG{o}{=} \PYG{n}{otherGen}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[:}\PYG{n}{point}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code}\PYG{p}{[}\PYG{n}{point}\PYG{p}{:]}
+        \PYG{n}{gen2} \PYG{o}{=} \PYG{n}{Gen}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{code\PYGZus{}length}\PYG{p}{,} \PYG{n}{code}\PYG{o}{=}\PYG{n}{code2}\PYG{p}{)}
+        \PYG{k}{return} \PYG{p}{[}\PYG{n}{gen1}\PYG{p}{,} \PYG{n}{gen2}\PYG{p}{]}
+
+    \PYG{k}{def} \PYG{n+nf}{apply}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{func}\PYG{p}{):}
+        \PYG{n}{value} \PYG{o}{=} \PYG{n}{Gen}\PYG{o}{.}\PYG{n}{binToInt}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{))}
+        \PYG{k}{return} \PYG{n}{func}\PYG{p}{(}\PYG{n}{value}\PYG{p}{)}
+    
+\end{Verbatim}

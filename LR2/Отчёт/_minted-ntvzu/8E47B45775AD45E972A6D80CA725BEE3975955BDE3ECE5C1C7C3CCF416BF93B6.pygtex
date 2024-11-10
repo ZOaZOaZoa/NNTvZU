@@ -1,0 +1,143 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{Gen} \PYG{k+kn}{import} \PYG{n}{Gen}
+\PYG{k+kn}{import} \PYG{n+nn}{random}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+
+\PYG{k}{def} \PYG{n+nf}{f}\PYG{p}{(}\PYG{n}{x}\PYG{p}{):}
+    \PYG{k}{return} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{p}{(}\PYG{n}{x} \PYG{o}{**} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{1}
+
+\PYG{k}{def} \PYG{n+nf}{selection}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{generation\PYGZus{}size}\PYG{p}{,} \PYG{n}{method}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{):}
+    \PYG{n}{valid\PYGZus{}methods} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+        \PYG{l+s+s1}{\PYGZsq{}classic\PYGZsq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}rank\PYGZsq{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if} \PYG{n}{method} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{valid\PYGZus{}methods}\PYG{p}{:}
+        \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Указан несуществующий метод }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{method}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{. Возможные варианты: }\PYG{l+s+si}{\PYGZob{}}\PYG{n+nb}{repr}\PYG{p}{(}\PYG{n}{valid\PYGZus{}methods}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+    
+    \PYG{k}{if} \PYG{n}{method} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}classic\PYGZsq{}}\PYG{p}{:}
+        \PYG{n}{result} \PYG{o}{=} \PYG{p}{[} \PYG{n}{random}\PYG{o}{.}\PYG{n}{choices}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{k}{for} \PYG{n}{\PYGZus{}} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{generation\PYGZus{}size}\PYG{p}{)} \PYG{p}{]}
+
+    \PYG{n}{select\PYGZus{}distribution} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+        \PYG{l+m+mi}{4}\PYG{p}{:} \PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{],}
+        \PYG{l+m+mi}{6}\PYG{p}{:} \PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{],}
+        \PYG{l+m+mi}{8}\PYG{p}{:} \PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if} \PYG{n}{method} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}rank\PYGZsq{}}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n}{generation\PYGZus{}size} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{select\PYGZus{}distribution}\PYG{p}{:}
+            \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Не определено распределение для выбора по ранговому методу для размера выборки }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{generation\PYGZus{}size}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{gens\PYGZus{}ranked} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{])}
+        \PYG{n}{gens\PYGZus{}ranked} \PYG{o}{=} \PYG{n}{gens\PYGZus{}ranked}\PYG{p}{[:,} \PYG{n}{gens\PYGZus{}ranked}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,:]}\PYG{o}{.}\PYG{n}{argsort}\PYG{p}{()[::}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{p}{]}
+
+        \PYG{n}{result} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{select\PYGZus{}counts} \PYG{o}{=} \PYG{n}{select\PYGZus{}distribution}\PYG{p}{[}\PYG{n}{generation\PYGZus{}size}\PYG{p}{]}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{select\PYGZus{}counts}\PYG{p}{)):}
+            
+            \PYG{n}{result} \PYG{o}{+=} \PYG{p}{[}\PYG{n}{gens\PYGZus{}ranked}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{i}\PYG{p}{],} \PYG{p}{]} \PYG{o}{*} \PYG{n}{select\PYGZus{}counts}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+        
+    \PYG{k}{return} \PYG{n}{result}
+
+
+\PYG{k}{def} \PYG{n+nf}{generate\PYGZus{}population}\PYG{p}{(}\PYG{n}{x\PYGZus{}min}\PYG{p}{,} \PYG{n}{x\PYGZus{}max}\PYG{p}{,} \PYG{n}{count}\PYG{p}{,} \PYG{n}{length}\PYG{p}{):}
+    \PYG{n}{population} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{sum\PYGZus{}adapt} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{for} \PYG{n}{\PYGZus{}} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{count}\PYG{p}{):}
+        \PYG{n}{x} \PYG{o}{=} \PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{n}{x\PYGZus{}min}\PYG{p}{,} \PYG{n}{x\PYGZus{}max}\PYG{p}{)}
+        \PYG{n}{gen} \PYG{o}{=} \PYG{n}{Gen}\PYG{p}{(}\PYG{n}{length}\PYG{p}{,} \PYG{n}{x}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}
+        \PYG{n}{adapt} \PYG{o}{=} \PYG{n}{f}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+        \PYG{n}{sum\PYGZus{}adapt} \PYG{o}{+=} \PYG{n}{adapt}
+        \PYG{n}{info} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+            \PYG{l+s+s1}{\PYGZsq{}gen\PYGZsq{}}\PYG{p}{:} \PYG{n}{gen}\PYG{p}{,}
+            \PYG{l+s+s1}{\PYGZsq{}adapt\PYGZsq{}}\PYG{p}{:} \PYG{n}{adapt}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{population}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{info}\PYG{p}{)}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{population}\PYG{p}{,} \PYG{n}{sum\PYGZus{}adapt}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{mutate\PYGZus{}population}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{p\PYGZus{}mutation}\PYG{p}{):}
+    \PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{gen} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n}{random}\PYG{o}{.}\PYG{n}{random}\PYG{p}{()} \PYG{o}{\PYGZlt{}} \PYG{n}{p\PYGZus{}mutation}\PYG{p}{:}
+            \PYG{n}{gen}\PYG{o}{.}\PYG{n}{mutate}\PYG{p}{()}
+
+\PYG{k}{def} \PYG{n+nf}{print\PYGZus{}stats}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{best\PYGZus{}gen}\PYG{p}{,} \PYG{n}{best\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{step}\PYG{p}{,} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{):}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Поколение }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{step}\PYG{l+s+si}{:}\PYG{l+s+s1}{\PYGZgt{}4}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{: \PYGZsq{}}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}
+    \PYG{p}{[} \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{gen}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{} \PYGZsq{}}\PYG{p}{)} \PYG{k}{for} \PYG{n}{gen} \PYG{o+ow}{in} \PYG{n}{gens} \PYG{p}{]}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s1}{Лучший ген }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{best\PYGZus{}gen}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{. Лучшая приспособленность }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{best\PYGZus{}adapt}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t\PYGZbs{}t}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}
+        \PYG{p}{[} \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{r\PYGZus{}adapt}\PYG{l+s+si}{:}\PYG{l+s+s1}{\PYGZgt{}3.0f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZpc{}\PYGZsq{}}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{} \PYGZsq{}}\PYG{p}{)} \PYG{k}{for} \PYG{n}{r\PYGZus{}adapt} \PYG{o+ow}{in} \PYG{n}{relative\PYGZus{}adapt} \PYG{p}{]}
+        \PYG{n+nb}{print}\PYG{p}{()}
+
+\PYG{k}{def} \PYG{n+nf}{print\PYGZus{}gens}\PYG{p}{(}\PYG{n}{text}\PYG{p}{,} \PYG{n}{gens}\PYG{p}{):}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{text}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}
+    \PYG{p}{[} \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{gen}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{} \PYGZsq{}}\PYG{p}{)} \PYG{k}{for} \PYG{n}{gen} \PYG{o+ow}{in} \PYG{n}{gens} \PYG{p}{]}
+    \PYG{n+nb}{print}\PYG{p}{()}
+
+\PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{():}
+    \PYG{c+c1}{\PYGZsh{}Общие параметры}
+    \PYG{n}{p\PYGZus{}mutation} \PYG{o}{=} \PYG{l+m+mf}{0.2}
+    \PYG{n}{gen\PYGZus{}length} \PYG{o}{=} \PYG{l+m+mi}{4}
+    \PYG{n}{generation\PYGZus{}size} \PYG{o}{=} \PYG{l+m+mi}{4}
+    \PYG{n}{selection\PYGZus{}method} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}classic\PYGZsq{}} \PYG{c+c1}{\PYGZsh{}classic или rank}
+    \PYG{n}{max\PYGZus{}steps} \PYG{o}{=} \PYG{l+m+mi}{4}
+    \PYG{n}{descriptive\PYGZus{}log} \PYG{o}{=} \PYG{k+kc}{True}
+    
+    \PYG{c+c1}{\PYGZsh{}Параметры генерации}
+    \PYG{n}{x\PYGZus{}min} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{x\PYGZus{}max} \PYG{o}{=} \PYG{l+m+mi}{15}
+    
+    \PYG{n}{population}\PYG{p}{,} \PYG{n}{sum\PYGZus{}adapt} \PYG{o}{=} \PYG{n}{generate\PYGZus{}population}\PYG{p}{(}\PYG{n}{x\PYGZus{}min}\PYG{p}{,} \PYG{n}{x\PYGZus{}max}\PYG{p}{,} \PYG{n}{generation\PYGZus{}size}\PYG{p}{,} \PYG{n}{gen\PYGZus{}length}\PYG{p}{)}
+    \PYG{n}{relative\PYGZus{}adapt} \PYG{o}{=} \PYG{p}{[} \PYG{l+m+mi}{100}\PYG{o}{*}\PYG{n}{gen\PYGZus{}info}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}adapt\PYGZsq{}}\PYG{p}{]}\PYG{o}{/}\PYG{n}{sum\PYGZus{}adapt} \PYG{k}{for} \PYG{n}{gen\PYGZus{}info} \PYG{o+ow}{in} \PYG{n}{population} \PYG{p}{]}
+    \PYG{n}{gens} \PYG{o}{=} \PYG{p}{[} \PYG{n}{gen\PYGZus{}info}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}gen\PYGZsq{}}\PYG{p}{]} \PYG{k}{for} \PYG{n}{gen\PYGZus{}info} \PYG{o+ow}{in} \PYG{n}{population} \PYG{p}{]}
+
+    \PYG{n}{max\PYGZus{}ind} \PYG{o}{=} \PYG{n}{relative\PYGZus{}adapt}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{relative\PYGZus{}adapt}\PYG{p}{))}
+    \PYG{n}{best\PYGZus{}gen} \PYG{o}{=} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{[}\PYG{n}{max\PYGZus{}ind}\PYG{p}{])}
+    \PYG{n}{best\PYGZus{}adapt} \PYG{o}{=} \PYG{n}{gens}\PYG{p}{[}\PYG{n}{max\PYGZus{}ind}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}
+
+    \PYG{n}{step} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{n}{print\PYGZus{}stats}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{best\PYGZus{}gen}\PYG{p}{,} \PYG{n}{best\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{)}
+    \PYG{k}{while} \PYG{n}{step} \PYG{o}{\PYGZlt{}=} \PYG{n}{max\PYGZus{}steps}\PYG{p}{:}
+        \PYG{c+c1}{\PYGZsh{}Селекция}
+        \PYG{n}{gens\PYGZus{}to\PYGZus{}cross} \PYG{o}{=} \PYG{n}{selection}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{generation\PYGZus{}size}\PYG{p}{,} \PYG{n}{selection\PYGZus{}method}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+            \PYG{n}{print\PYGZus{}gens}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s1}{Выбраны для скрещивания: \PYGZsq{}}\PYG{p}{,} \PYG{n}{gens\PYGZus{}to\PYGZus{}cross}\PYG{p}{)}
+    
+        \PYG{c+c1}{\PYGZsh{}Мутация}
+        \PYG{n}{mutate\PYGZus{}population}\PYG{p}{(}\PYG{n}{gens\PYGZus{}to\PYGZus{}cross}\PYG{p}{,} \PYG{n}{p\PYGZus{}mutation}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+            \PYG{n}{print\PYGZus{}gens}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s1}{Гены после мутации: \PYGZsq{}}\PYG{p}{,} \PYG{n}{gens\PYGZus{}to\PYGZus{}cross}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{}Скрещивание}
+        \PYG{n}{new\PYGZus{}gens} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{sum\PYGZus{}adapt} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{generation\PYGZus{}size} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{)):}
+            \PYG{n}{gens\PYGZus{}to\PYGZus{}add} \PYG{o}{=} \PYG{n}{gens\PYGZus{}to\PYGZus{}cross}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{cross}\PYG{p}{(}\PYG{n}{gens\PYGZus{}to\PYGZus{}cross}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{])}
+            \PYG{n}{sum\PYGZus{}adapt} \PYG{o}{+=} \PYG{n}{gens\PYGZus{}to\PYGZus{}add}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)} \PYG{o}{+} \PYG{n}{gens\PYGZus{}to\PYGZus{}add}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}
+            \PYG{n}{new\PYGZus{}gens} \PYG{o}{+=} \PYG{n}{gens\PYGZus{}to\PYGZus{}add}
+        \PYG{n}{gens} \PYG{o}{=} \PYG{n}{new\PYGZus{}gens}
+        \PYG{n}{relative\PYGZus{}adapt} \PYG{o}{=} \PYG{p}{[} \PYG{l+m+mi}{100}\PYG{o}{*}\PYG{n}{gen}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}\PYG{o}{/}\PYG{n}{sum\PYGZus{}adapt} \PYG{k}{for} \PYG{n}{gen} \PYG{o+ow}{in} \PYG{n}{gens} \PYG{p}{]}
+        \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+            \PYG{n}{print\PYGZus{}gens}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s1}{Результат скрещивания: \PYGZsq{}}\PYG{p}{,} \PYG{n}{gens}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{}Выбор лучшего}
+        \PYG{n}{max\PYGZus{}ind} \PYG{o}{=} \PYG{n}{relative\PYGZus{}adapt}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{relative\PYGZus{}adapt}\PYG{p}{))}
+        \PYG{n}{max\PYGZus{}gen} \PYG{o}{=} \PYG{n}{gens}\PYG{p}{[}\PYG{n}{max\PYGZus{}ind}\PYG{p}{]}
+        \PYG{n}{max\PYGZus{}adapt} \PYG{o}{=} \PYG{n}{gens}\PYG{p}{[}\PYG{n}{max\PYGZus{}ind}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}
+
+        \PYG{k}{if} \PYG{n}{max\PYGZus{}adapt} \PYG{o}{\PYGZgt{}} \PYG{n}{best\PYGZus{}adapt}\PYG{p}{:}
+            \PYG{n}{best\PYGZus{}gen} \PYG{o}{=} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{max\PYGZus{}gen}\PYG{p}{)}
+            \PYG{n}{best\PYGZus{}adapt} \PYG{o}{=} \PYG{n}{max\PYGZus{}adapt}
+
+            \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s1}{Ген }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{max\PYGZus{}gen}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ лучше }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{best\PYGZus{}gen}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, потому что }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{max\PYGZus{}adapt}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZgt{} }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{best\PYGZus{}adapt}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{c+c1}{\PYGZsh{}Печать поколения}
+        \PYG{k}{if} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{()}
+        \PYG{n}{print\PYGZus{}stats}\PYG{p}{(}\PYG{n}{gens}\PYG{p}{,} \PYG{n}{best\PYGZus{}gen}\PYG{p}{,} \PYG{n}{best\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{relative\PYGZus{}adapt}\PYG{p}{,} \PYG{n}{step}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{descriptive\PYGZus{}log}\PYG{p}{)}
+        
+        \PYG{n}{step} \PYG{o}{+=} \PYG{l+m+mi}{1}
+    
+
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZsq{}}\PYG{p}{:}
+    \PYG{n}{main}\PYG{p}{()}
+\end{Verbatim}

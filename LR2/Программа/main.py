@@ -71,8 +71,6 @@ def print_gens(text, gens):
     [ print(gen, end=' ') for gen in gens ]
     print()
 
-
-
 def main():
     #Общие параметры
     p_mutation = 0.2
